@@ -45,6 +45,6 @@ public class ReviewService {
     }
 
 //    public List<Review> getAllReviews() {
-//        return reviewRepository.findAll();
+//        return review Repository.findAll();
 //    }
 }
