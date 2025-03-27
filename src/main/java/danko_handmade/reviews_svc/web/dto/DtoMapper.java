@@ -12,6 +12,7 @@ public class DtoMapper {
                 .userId(review.getUserId())
                 .rating(review.getRating())
                 .createdOn(review.getCreatedOn())
+                .mainPhotoUrl(review.getMainPhotoUrl())
                 .textReview(review.getTextReview())
                 .productCode(review.getProductCode())
                 .build();
@@ -20,6 +21,7 @@ public class DtoMapper {
     public static ReviewDto toReviewDto(Review review) {
         return ReviewDto.builder()
                 .productCode(review.getProductCode())
+                .mainPhotoUrl(review.getMainPhotoUrl())
                 .rating(review.getRating())
                 .reviewText(review.getTextReview())
                 .build();

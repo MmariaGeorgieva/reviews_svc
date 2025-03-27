@@ -5,15 +5,12 @@ import danko_handmade.reviews_svc.repository.ReviewRepository;
 import danko_handmade.reviews_svc.web.dto.DtoMapper;
 import danko_handmade.reviews_svc.web.dto.LeaveReview;
 import danko_handmade.reviews_svc.web.dto.ReviewDto;
-import danko_handmade.reviews_svc.web.dto.ReviewResponse;
-import org.apache.kafka.common.protocol.types.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -43,6 +40,7 @@ public class ReviewService {
         Review review = Review.builder()
                 .productCode(leaveReview.getProductCode())
                 .textReview(leaveReview.getTextReview())
+                .mainPhotoUrl(leaveReview.getMainPhotoUrl())
                 .createdOn(LocalDateTime.now())
                 .userId(leaveReview.getUserId())
                 .rating(leaveReview.getRating())
@@ -59,7 +57,6 @@ public class ReviewService {
             reviewDto = DtoMapper.toReviewDto(review);
             allReviewsDtos.add(reviewDto);
         }
-
         return allReviewsDtos;
     }
 }

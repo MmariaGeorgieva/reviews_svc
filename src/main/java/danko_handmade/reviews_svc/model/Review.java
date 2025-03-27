@@ -26,6 +26,9 @@ public class Review {
     @Column(nullable = false)
     private String productCode;
 
+    @NotNull
+    private String mainPhotoUrl;
+
     @Lob
     @Column(columnDefinition = "TEXT", nullable = false)
     private String textReview;

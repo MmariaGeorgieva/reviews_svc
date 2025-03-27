@@ -20,6 +20,9 @@ public class LeaveReview {
     private String productCode;
 
     @NotNull
+    private String mainPhotoUrl;
+
+    @NotNull
     @NotBlank
     @Size(max = 1000)
     private String textReview;
