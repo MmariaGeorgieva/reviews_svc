@@ -12,11 +12,12 @@ import java.util.UUID;
 @Data
 @Builder
 public class LeaveReview {
+
     @NotNull
     private UUID userId;
 
     @NotNull
-    private UUID productId;
+    private String productCode;
 
     @NotNull
     @NotBlank

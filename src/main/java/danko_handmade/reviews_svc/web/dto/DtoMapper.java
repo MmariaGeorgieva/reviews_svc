@@ -13,7 +13,15 @@ public class DtoMapper {
                 .rating(review.getRating())
                 .createdOn(review.getCreatedOn())
                 .textReview(review.getTextReview())
-                .productId(review.getProductId())
+                .productCode(review.getProductCode())
+                .build();
+    }
+
+    public static ReviewDto toReviewDto(Review review) {
+        return ReviewDto.builder()
+                .productCode(review.getProductCode())
+                .rating(review.getRating())
+                .reviewText(review.getTextReview())
                 .build();
     }
 }

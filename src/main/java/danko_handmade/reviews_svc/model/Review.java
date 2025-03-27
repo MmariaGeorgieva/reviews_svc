@@ -24,7 +24,7 @@ public class Review {
     private UUID userId;
 
     @Column(nullable = false)
-    private UUID productId;
+    private String productCode;
 
     @Lob
     @Column(columnDefinition = "TEXT", nullable = false)
