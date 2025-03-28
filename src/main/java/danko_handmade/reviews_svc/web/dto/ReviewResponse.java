@@ -16,7 +16,7 @@ public class ReviewResponse {
     private UUID userId;
 
     @NotNull
-    private String productCode;
+    private UUID productId;
 
     @NotNull
     private String mainPhotoUrl;

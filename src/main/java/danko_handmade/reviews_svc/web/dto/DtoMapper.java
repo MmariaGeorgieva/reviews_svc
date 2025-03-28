@@ -14,13 +14,13 @@ public class DtoMapper {
                 .createdOn(review.getCreatedOn())
                 .mainPhotoUrl(review.getMainPhotoUrl())
                 .textReview(review.getTextReview())
-                .productCode(review.getProductCode())
+                .productId(review.getProductId())
                 .build();
     }
 
     public static ReviewDto toReviewDto(Review review) {
         return ReviewDto.builder()
-                .productCode(review.getProductCode())
+                .productId(review.getProductId())
                 .mainPhotoUrl(review.getMainPhotoUrl())
                 .rating(review.getRating())
                 .reviewText(review.getTextReview())

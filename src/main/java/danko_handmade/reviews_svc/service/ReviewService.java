@@ -24,21 +24,21 @@ public class ReviewService {
     }
 
 
-    public boolean hasUserReviewedProduct(UUID userId, String productCode) {
-        return reviewRepository.existsByUserIdAndProductCode(userId, productCode);
+    public boolean hasUserReviewedProduct(UUID userId, UUID productId) {
+        return reviewRepository.existsByUserIdAndProductId(userId, productId);
     }
 
     public Review createReview(LeaveReview leaveReview) {
 
         UUID userId = leaveReview.getUserId();
-        String productCode = leaveReview.getProductCode();
+        UUID productId = leaveReview.getProductId();
 
-        if (hasUserReviewedProduct(userId, productCode)) {
+        if (hasUserReviewedProduct(userId, productId)) {
             throw new RuntimeException("User has already reviewed this product.");
         }
 
         Review review = Review.builder()
-                .productCode(leaveReview.getProductCode())
+                .productId(leaveReview.getProductId())
                 .textReview(leaveReview.getTextReview())
                 .mainPhotoUrl(leaveReview.getMainPhotoUrl())
                 .createdOn(LocalDateTime.now())

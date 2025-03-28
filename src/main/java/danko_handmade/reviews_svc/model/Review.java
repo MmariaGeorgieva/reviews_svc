@@ -24,7 +24,7 @@ public class Review {
     private UUID userId;
 
     @Column(nullable = false)
-    private String productCode;
+    private UUID productId;
 
     @NotNull
     private String mainPhotoUrl;
