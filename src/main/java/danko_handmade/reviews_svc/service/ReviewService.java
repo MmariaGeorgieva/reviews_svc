@@ -3,7 +3,7 @@ package danko_handmade.reviews_svc.service;
 import danko_handmade.reviews_svc.model.Review;
 import danko_handmade.reviews_svc.repository.ReviewRepository;
 import danko_handmade.reviews_svc.web.dto.DtoMapper;
-import danko_handmade.reviews_svc.web.dto.LeaveReview;
+import danko_handmade.reviews_svc.web.dto.UpsertReview;
 import danko_handmade.reviews_svc.web.dto.ReviewDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,39 +24,42 @@ public class ReviewService {
     }
 
 
-    public boolean hasUserReviewedProduct(UUID userId, UUID productId) {
+    public boolean hasUserAlreadyReviewedThisProduct(UUID userId, UUID productId) {
         return reviewRepository.existsByUserIdAndProductId(userId, productId);
     }
 
-    public Review createReview(LeaveReview leaveReview) {
+    public Review upsertReview(UpsertReview upsertReview) {
 
-        UUID userId = leaveReview.getUserId();
-        UUID productId = leaveReview.getProductId();
+        UUID userId = upsertReview.getUserId();
+        UUID productId = upsertReview.getProductId();
 
-        if (hasUserReviewedProduct(userId, productId)) {
-            throw new RuntimeException("User has already reviewed this product.");
+        if (hasUserAlreadyReviewedThisProduct(userId, productId)) {
+            Review review = reviewRepository.findByUserIdAndProductId(userId, productId);
+            review.setRating(upsertReview.getRating());
+            review.setTextReview(upsertReview.getTextReview());
+            return reviewRepository.save(review);
         }
 
         Review review = Review.builder()
-                .productId(leaveReview.getProductId())
-                .textReview(leaveReview.getTextReview())
-                .mainPhotoUrl(leaveReview.getMainPhotoUrl())
+                .productId(upsertReview.getProductId())
+                .textReview(upsertReview.getTextReview())
+                .mainPhotoUrl(upsertReview.getMainPhotoUrl())
                 .createdOn(LocalDateTime.now())
-                .userId(leaveReview.getUserId())
-                .rating(leaveReview.getRating())
+                .userId(upsertReview.getUserId())
+                .rating(upsertReview.getRating())
                 .build();
         return reviewRepository.save(review);
     }
 
-    public List<ReviewDto> getAllReviewsDtos() {
+    public List<ReviewDto> getAllReviewsDto() {
         List<Review> allReviews = reviewRepository.findAll();
         ReviewDto reviewDto = null;
-        List<ReviewDto> allReviewsDtos = new ArrayList<>();
+        List<ReviewDto> allReviewsDto = new ArrayList<>();
 
         for (Review review : allReviews) {
             reviewDto = DtoMapper.toReviewDto(review);
-            allReviewsDtos.add(reviewDto);
+            allReviewsDto.add(reviewDto);
         }
-        return allReviewsDtos;
+        return allReviewsDto;
     }
 }
