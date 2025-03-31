@@ -42,6 +42,7 @@ public class ReviewService {
 
         Review review = Review.builder()
                 .productId(upsertReview.getProductId())
+                .orderId(upsertReview.getOrderId())
                 .textReview(upsertReview.getTextReview())
                 .mainPhotoUrl(upsertReview.getMainPhotoUrl())
                 .createdOn(LocalDateTime.now())
