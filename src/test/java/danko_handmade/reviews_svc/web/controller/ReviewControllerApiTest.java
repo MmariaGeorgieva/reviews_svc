@@ -1,5 +1,6 @@
 package danko_handmade.reviews_svc.web.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import danko_handmade.reviews_svc.model.Review;
 import danko_handmade.reviews_svc.service.ReviewService;
 import danko_handmade.reviews_svc.web.ReviewController;
@@ -16,6 +17,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.servlet.View;
 
 import java.util.ArrayList;
@@ -36,57 +38,36 @@ public class ReviewControllerApiTest {
     @Autowired
     private MockMvc mockMvc;
 
-//    @Test
-//    void upsertReview_shouldReturnCreatedStatusAndReviewResponse() throws Exception {
-//
-//        UpsertReview upsertReview = new UpsertReview();
-//        upsertReview.setOrderId(UUID.randomUUID());
-//        upsertReview.setUserId(UUID.randomUUID());
-//        upsertReview.setProductId(UUID.randomUUID());
-//        upsertReview.setMainPhotoUrl("https://example.com/image.jpg");
-//        upsertReview.setTextReview("Great product!");
-//        upsertReview.setRating(5);
-//
-//        Review review = new Review();
-//        review.setProductId(upsertReview.getProductId());
-//        review.setOrderId(upsertReview.getProductId());
-//        review.setUserId(upsertReview.getProductId());
-//        review.setTextReview(upsertReview.getTextReview());
-//        review.setRating(upsertReview.getRating());
-//        review.setMainPhotoUrl(upsertReview.getMainPhotoUrl());
-//
-//        ReviewResponse reviewResponse = DtoMapper.fromReview(review);
-//
-//        when(reviewService.upsertReview(upsertReview)).thenReturn(review);
-//
-//        Review result = reviewService.upsertReview(upsertReview);
-//
-//        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/api/v1/reviews")
-//                        .contentType(MediaType.APPLICATION_JSON);
-//
-//        mockMvc.perform(request)
-//                .andExpect(status().isOk());
-//    }
+    @Test
+    void upsertReview_shouldReturnCreatedStatusAndReviewResponse() throws Exception {
+        UpsertReview upsertReview = new UpsertReview();
+        upsertReview.setOrderId(UUID.randomUUID());
+        upsertReview.setUserId(UUID.randomUUID());
+        upsertReview.setProductId(UUID.randomUUID());
+        upsertReview.setMainPhotoUrl("https://example.com/image.jpg");
+        upsertReview.setTextReview("Great product!");
+        upsertReview.setRating(5);
 
-//    @Test
-//    void getAllReviews_shouldReturnOkAndListOfReviews() throws Exception {
-//
-//        List<ReviewDto> mockReviewDtos = new ArrayList<>();
-//        mockReviewDtos.add(new ReviewDto(UUID.randomUUID(), "image1.jpg", 5, "Great product!"));
-//        mockReviewDtos.add(new ReviewDto(UUID.randomUUID(), "image2.jpg", 3, "Not bad"));
-//
-//        when(reviewService.getAllReviewsDto()).thenReturn(mockReviewDtos);
-//
-//        mockMvc.perform(get("/all"))
-//                .andExpect(status().isOk());
-//                .andExpect(content().contentType("application/json"))
-//                .andExpect(jsonPath("$[0].productId").value("Product 1"))
-//                .andExpect(jsonPath("$[1].productId").value("Product 2"))
-//                .andExpect(jsonPath("$[0].reviewText").value("Great product!"))
-//                .andExpect(jsonPath("$[1].reviewText").value("Not bad"))
-//                .andExpect(jsonPath("$[0].rating").value(5))
-//                .andExpect(jsonPath("$[1].rating").value(3));
-//    }
+        Review review = new Review();
+        review.setProductId(upsertReview.getProductId());
+        review.setOrderId(upsertReview.getOrderId());
+        review.setUserId(upsertReview.getUserId());
+        review.setTextReview(upsertReview.getTextReview());
+        review.setRating(upsertReview.getRating());
+        review.setMainPhotoUrl(upsertReview.getMainPhotoUrl());
 
+        when(reviewService.upsertReview(upsertReview)).thenReturn(review);
 
+        String jsonContent = new ObjectMapper().writeValueAsString(upsertReview);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8081/api/v1/reviews")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonContent))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.productId").value(review.getProductId().toString()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.userId").value(review.getUserId().toString()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.textReview").value(review.getTextReview()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.rating").value(review.getRating()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.mainPhotoUrl").value(review.getMainPhotoUrl()));
+    }
 }
