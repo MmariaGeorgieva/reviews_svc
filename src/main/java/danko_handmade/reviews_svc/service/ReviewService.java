@@ -5,6 +5,7 @@ import danko_handmade.reviews_svc.repository.ReviewRepository;
 import danko_handmade.reviews_svc.web.dto.DtoMapper;
 import danko_handmade.reviews_svc.web.dto.UpsertReview;
 import danko_handmade.reviews_svc.web.dto.ReviewDto;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,7 @@ public class ReviewService {
         return reviewRepository.existsByUserIdAndProductId(userId, productId);
     }
 
+    @Transactional
     public Review upsertReview(UpsertReview upsertReview) {
 
         UUID userId = upsertReview.getUserId();
