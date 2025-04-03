@@ -17,10 +17,12 @@ import java.util.UUID;
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
+    private final DtoMapper dtoMapper;
 
     @Autowired
-    public ReviewService(ReviewRepository reviewRepository) {
+    public ReviewService(ReviewRepository reviewRepository, DtoMapper dtoMapper) {
         this.reviewRepository = reviewRepository;
+        this.dtoMapper = dtoMapper;
     }
 
 
@@ -54,11 +56,10 @@ public class ReviewService {
 
     public List<ReviewDto> getAllReviewsDto() {
         List<Review> allReviews = reviewRepository.findAll();
-        ReviewDto reviewDto = null;
         List<ReviewDto> allReviewsDto = new ArrayList<>();
 
         for (Review review : allReviews) {
-            reviewDto = DtoMapper.toReviewDto(review);
+            ReviewDto reviewDto = DtoMapper.toReviewDto(review);
             allReviewsDto.add(reviewDto);
         }
         return allReviewsDto;

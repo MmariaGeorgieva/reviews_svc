@@ -1,9 +1,9 @@
 package danko_handmade.reviews_svc.web.dto;
 
 import danko_handmade.reviews_svc.model.Review;
-import lombok.experimental.UtilityClass;
+import org.springframework.stereotype.Component;
 
-@UtilityClass
+@Component
 public class DtoMapper {
 
     public static ReviewResponse fromReview(Review review) {
